@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo Gaadi · Notes</title>
+    <meta name="description" content="Photos, videos and references behind the build.">
+    <meta name="robots" content="noindex">
+
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../tokens.css">
+
+    <style>
+        /* Notes page — same tokens, same rhythm as main site, just no top nav. */
+
+        /* Top bar (thin) */
+        .notes-bar {
+            position: sticky; top: 0; z-index: 50;
+            background: color-mix(in srgb, var(--c-paper) 88%, transparent);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--c-hairline);
+        }
+        .notes-bar-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 0;
+        }
+        .notes-bar .brand {
+            display: flex; align-items: center; gap: 10px;
+            font-family: var(--font-display);
+            font-size: 18px; font-weight: var(--w-semibold);
+            color: var(--c-ink);
+        }
+        .notes-bar .brand img { height: 26px; width: auto; }
+        .notes-bar .back {
+            font-size: var(--t-body-sm);
+            color: var(--c-ink-60);
+            transition: color var(--d-base) var(--ease-out);
+        }
+        .notes-bar .back:hover { color: var(--c-forest); }
+
+        /* HERO (intro) */
+        .notes-hero { padding: 120px 0 var(--s-7); }
+        .notes-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 5.5vw, 64px);
+            font-weight: var(--w-medium);
+            color: var(--c-ink);
+            line-height: var(--lh-tight);
+            letter-spacing: var(--ls-tight);
+        }
+        .notes-hero h1 .accent { color: var(--c-forest); font-weight: var(--w-medium); }
+        .notes-hero p {
+            margin-top: var(--s-5);
+            max-width: 620px;
+            font-size: var(--t-body-lg);
+            color: var(--c-ink-80);
+            line-height: var(--lh-relaxed);
+        }
+
+        /* Gallery */
+        .gallery-subhead {
+            font-family: var(--font-display);
+            font-size: var(--t-title-2);
+            font-weight: var(--w-medium);
+            color: var(--c-ink);
+            margin: var(--s-7) 0 var(--s-4);
+            padding-bottom: var(--s-2);
+            border-bottom: 2px solid var(--c-forest);
+            display: inline-block;
+        }
+        .gallery-subhead:first-of-type { margin-top: var(--s-6); }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--s-3);
+        }
+        .gallery-cell {
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            border-radius: var(--r-md);
+            background: var(--c-paper-3);
+            border: 1px solid var(--c-hairline);
+        }
+        .gallery-cell img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform var(--d-slow) var(--ease-out);
+            display: block;
+        }
+        .gallery-cell:hover img { transform: scale(1.04); }
+
+        .album-links {
+            margin-top: var(--s-6);
+            padding-top: var(--s-5);
+            border-top: 1px solid var(--c-hairline);
+            display: flex; gap: var(--s-6); flex-wrap: wrap;
+            font-size: var(--t-body-sm);
+            color: var(--c-ink-60);
+        }
+        .album-links a {
+            color: var(--c-ink);
+            border-bottom: 1px solid var(--c-hairline);
+            padding-bottom: 1px;
+            transition: color var(--d-base), border-color var(--d-base);
+        }
+        .album-links a:hover { color: var(--c-forest); border-bottom-color: var(--c-forest); }
+
+        /* References */
+        .refs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--s-4);
+            margin-top: var(--s-6);
+        }
+        .ref-card {
+            display: block;
+            background: var(--c-paper);
+            border: 1px solid var(--c-hairline);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            transition: transform var(--d-base) var(--ease-out), border-color var(--d-base) var(--ease-out);
+        }
+        .ref-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--c-forest);
+        }
+        .ref-shot {
+            aspect-ratio: 16/10;
+            background: var(--c-paper-3);
+            border-bottom: 1px solid var(--c-hairline);
+            overflow: hidden;
+        }
+        .ref-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ref-meta { padding: var(--s-4) var(--s-5); }
+        .ref-meta .country {
+            font-size: 11px;
+            letter-spacing: var(--ls-wider);
+            text-transform: uppercase;
+            color: var(--c-ink-60);
+            font-weight: var(--w-semibold);
+        }
+        .ref-meta .name {
+            margin-top: 4px;
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: var(--w-medium);
+            color: var(--c-ink);
+        }
+        .ref-meta .link {
+            margin-top: var(--s-3);
+            display: block;
+            font-size: 12px;
+            color: var(--c-forest);
+        }
+
+        /* Footer */
+        .notes-footer {
+            border-top: 1px solid var(--c-hairline);
+            padding: var(--s-6) 0;
+            text-align: center;
+        }
+        .notes-footer a {
+            font-size: var(--t-body-sm);
+            color: var(--c-ink-60);
+            transition: color var(--d-base);
+        }
+        .notes-footer a:hover { color: var(--c-forest); }
+
+        @media (max-width: 920px) {
+            .notes-hero { padding: 90px 0 var(--s-6); }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .refs-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 540px) {
+            .refs-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <header class="notes-bar">
+        <div class="wrap">
+            <div class="notes-bar-row">
+                <a href="../" class="brand">
+                    <img src="../images/logo.png" alt="">
+                    Cargo Gaadi
+                </a>
+                <a href="../" class="back">← back to main site</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="notes-hero">
+        <div class="wrap">
+            <p class="t-eyebrow">Notes</p>
+            <h1 style="margin-top: var(--s-5);">More about <span class="accent">the build</span>.</h1>
+            <p>
+                Photos, video and references behind Cargo Gaadi. Not linked from the main site. Share this URL with anyone you want to give the longer story to.
+            </p>
+        </div>
+    </section>
+
+    <!-- ─── 1 · GALLERY ─── -->
+    <section class="section section--sunken">
+        <div class="wrap">
+            <div class="sect-head">
+                <p class="t-eyebrow">Photos</p>
+                <h2 class="t-display-2">From the workshop to the bike.</h2>
+                <p class="t-body-lg lede">Build process and finished bike. Full albums on Google Photos.</p>
+            </div>
+
+            <h3 class="gallery-subhead">Build process</h3>
+            <div class="gallery-grid">
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-01.jpeg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-02.jpeg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-03.jpeg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-04.jpeg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-05.jpeg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-06.jpeg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-07.jpg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-08.jpg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-09.jpg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-10.jpeg" alt="Cargo Gaadi build process"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/build-11.jpeg" alt="Cargo Gaadi build process"></div>
+            </div>
+
+            <h3 class="gallery-subhead">The finished bike</h3>
+            <div class="gallery-grid">
+                <div class="gallery-cell"><img src="../images/notes/gallery/bike-01.jpeg" alt="Cargo Gaadi finished bike"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/bike-02.jpeg" alt="Cargo Gaadi finished bike"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/bike-03.jpeg" alt="Cargo Gaadi finished bike"></div>
+                <div class="gallery-cell"><img src="../images/notes/gallery/bike-04.jpeg" alt="Cargo Gaadi finished bike"></div>
+            </div>
+
+            <div class="album-links">
+                <span>Full albums:</span>
+                <a href="https://photos.app.goo.gl/XBdMouWtrez6n8Q1A" target="_blank">Building Cargo Gaadi ↗</a>
+                <a href="https://photos.app.goo.gl/gvVdf5ZBibUE6RM27" target="_blank">Cargo Gaadi photos ↗</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── 2 · REFERENCES ─── -->
+    <section class="section">
+        <div class="wrap">
+            <div class="sect-head">
+                <p class="t-eyebrow">References</p>
+                <h2 class="t-display-2">Cargo bikes we looked at.</h2>
+                <p class="t-body-lg lede">Bikes that shaped how we think about the design. Each card links to the maker.</p>
+            </div>
+
+            <div class="refs-grid">
+
+                <a href="https://larryvsharry.com/products/ebullitt" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/bullitt.webp" alt="Larry vs. Harry Bullitt"></div>
+                    <div class="ref-meta">
+                        <div class="country">Denmark · Primary reference</div>
+                        <div class="name">Larry vs. Harry · Bullitt</div>
+                        <span class="link">larryvsharry.com ↗</span>
+                    </div>
+                </a>
+
+                <a href="https://www.urbanarrow.com/" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/urban-arrow.webp" alt="Urban Arrow"></div>
+                    <div class="ref-meta">
+                        <div class="country">Netherlands</div>
+                        <div class="name">Urban Arrow</div>
+                        <span class="link">urbanarrow.com ↗</span>
+                    </div>
+                </a>
+
+                <a href="https://muli-cycles.de/" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/muli.jpg" alt="Muli Cycles"></div>
+                    <div class="ref-meta">
+                        <div class="country">Germany</div>
+                        <div class="name">Muli Cycles</div>
+                        <span class="link">muli-cycles.de ↗</span>
+                    </div>
+                </a>
+
+                <a href="https://www.bakfiets.nl/" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/bakfiets.jpeg" alt="Bakfiets"></div>
+                    <div class="ref-meta">
+                        <div class="country">Netherlands</div>
+                        <div class="name">Bakfiets</div>
+                        <span class="link">bakfiets.nl ↗</span>
+                    </div>
+                </a>
+
+                <a href="https://onomotion.com/" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/ono.webp" alt="ONO Motion"></div>
+                    <div class="ref-meta">
+                        <div class="country">Germany</div>
+                        <div class="name">ONO Motion</div>
+                        <span class="link">onomotion.com ↗</span>
+                    </div>
+                </a>
+
+                <a href="https://pinion.eu/" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/pinion.jpg" alt="Pinion E-Cargobike"></div>
+                    <div class="ref-meta">
+                        <div class="country">Germany · Drivetrain</div>
+                        <div class="name">Pinion E-Cargobike</div>
+                        <span class="link">pinion.eu ↗</span>
+                    </div>
+                </a>
+
+                <a href="https://www.cargocycling.nl/" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/cargo-cycling.jpeg" alt="Cargo Cycling Nuland"></div>
+                    <div class="ref-meta">
+                        <div class="country">Netherlands · Commercial</div>
+                        <div class="name">Cargo Cycling · Nuland</div>
+                        <span class="link">cargocycling.nl ↗</span>
+                    </div>
+                </a>
+
+                <a href="https://www.packopod.com/" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/packopod.jpeg" alt="Packopod"></div>
+                    <div class="ref-meta">
+                        <div class="country">Modular packaging</div>
+                        <div class="name">Packopod</div>
+                        <span class="link">packopod.com ↗</span>
+                    </div>
+                </a>
+
+                <a href="https://www.ridezoomo.com/" target="_blank" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/zoomo.jpeg" alt="Zoomo"></div>
+                    <div class="ref-meta">
+                        <div class="country">Last-mile delivery</div>
+                        <div class="name">Zoomo</div>
+                        <span class="link">ridezoomo.com ↗</span>
+                    </div>
+                </a>
+
+                <a href="#" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/cargo-coffee-bike.jpg" alt="Cargo Coffee Bike"></div>
+                    <div class="ref-meta">
+                        <div class="country">Use-case · Mobile café</div>
+                        <div class="name">Cargo Coffee Bike</div>
+                        <span class="link">concept reference</span>
+                    </div>
+                </a>
+
+                <a href="#" class="ref-card">
+                    <div class="ref-shot"><img src="../images/notes/references/zen-direct.jpeg" alt="Zen Direct"></div>
+                    <div class="ref-meta">
+                        <div class="country">India · Electric three-wheeler</div>
+                        <div class="name">Zen Direct</div>
+                        <span class="link">the alternative we're not building</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="notes-footer">
+        <div class="wrap">
+            <a href="../">← back to cargo-gaadi.in</a>
+        </div>
+    </footer>
+
+</body>
+</html>
