@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo Gaadi · Design Kit</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="tokens.css">
+
+    <style>
+        /* Page-local styling — uses ONLY tokens */
+        .kit-header {
+            padding: 80px 0 40px;
+            border-bottom: 1px solid var(--c-hairline);
+        }
+        .kit-section {
+            padding: 64px 0;
+            border-bottom: 1px solid var(--c-hairline);
+        }
+        .kit-section h2 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: var(--w-medium);
+            color: var(--c-ink);
+            margin-bottom: 8px;
+            letter-spacing: var(--ls-snug);
+        }
+        .kit-section .lede {
+            color: var(--c-ink-60);
+            font-size: var(--t-body);
+            margin-bottom: 36px;
+            max-width: 640px;
+        }
+
+        /* Swatch grid */
+        .swatches {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        .swatch {
+            border-radius: var(--r-md);
+            overflow: hidden;
+            border: 1px solid var(--c-hairline);
+            background: var(--c-paper);
+        }
+        .swatch-chip {
+            height: 110px;
+            display: flex; align-items: flex-end;
+            padding: 14px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: var(--w-medium);
+        }
+        .swatch-meta {
+            padding: 12px 14px;
+            background: var(--c-paper);
+        }
+        .swatch-name {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: var(--w-semibold);
+            color: var(--c-ink);
+        }
+        .swatch-token {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--c-ink-60);
+            margin-top: 2px;
+        }
+
+        /* Type sample */
+        .type-sample {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+        .type-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--c-hairline);
+            align-items: baseline;
+        }
+        .type-meta {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--c-ink-60);
+            line-height: 1.6;
+        }
+        .type-meta strong { color: var(--c-ink); font-weight: var(--w-semibold); display: block; margin-bottom: 4px; }
+
+        /* Button row */
+        .btn-row {
+            display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+            margin-bottom: 24px;
+        }
+        .btn-row.on-dark {
+            background: var(--c-ink);
+            padding: 24px;
+            border-radius: var(--r-lg);
+        }
+
+        /* Spacing scale */
+        .spacing-row {
+            display: flex; align-items: center; gap: 24px;
+            padding: 12px 0;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--c-ink-60);
+        }
+        .spacing-bar {
+            background: var(--c-forest);
+            height: 16px; border-radius: 2px;
+        }
+        .spacing-row strong { color: var(--c-ink); min-width: 60px; }
+
+        /* Radius row */
+        .radius-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .radius-box {
+            width: 80px; height: 80px;
+            background: var(--c-forest);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--c-paper);
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+
+        /* Shadows */
+        .shadow-row { display: flex; gap: 24px; flex-wrap: wrap; padding: 16px 0; }
+        .shadow-box {
+            width: 140px; height: 100px;
+            background: var(--c-paper);
+            border-radius: var(--r-md);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--c-ink-60);
+        }
+
+        /* Component preview area */
+        .preview {
+            padding: 24px;
+            background: var(--c-paper);
+            border: 1px solid var(--c-hairline);
+            border-radius: var(--r-lg);
+        }
+        .preview.preview--sunken { background: var(--c-paper-2); }
+
+        /* Mini cargo-bike type card preview */
+        .demo-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+        .type-card {
+            background: var(--c-paper);
+            border: 1px solid var(--c-hairline);
+            border-radius: var(--r-lg);
+            padding: 20px;
+            text-align: center;
+            transition: transform var(--d-base) var(--ease-out);
+        }
+        .type-card.is-ours {
+            border-color: var(--c-forest);
+            background: linear-gradient(180deg, var(--c-paper) 0%, var(--c-forest-10) 100%);
+            box-shadow: var(--elev-2);
+        }
+        .type-card h4 { font-family: var(--font-display); font-size: 15px; font-weight: var(--w-semibold); color: var(--c-ink); margin-bottom: 4px; }
+        .type-card p  { font-size: 12px; color: var(--c-ink-60); }
+        .type-card svg { width: 100%; height: 48px; margin-bottom: 10px; }
+
+        .demo-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 24px;
+            padding: 24px;
+            background: var(--c-paper-2);
+            border-radius: var(--r-lg);
+        }
+
+        /* Header band */
+        .kit-band {
+            background: var(--c-ink);
+            color: var(--c-paper);
+            padding: 6px 0;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: var(--ls-wide);
+        }
+        .kit-band .wrap { display: flex; justify-content: space-between; gap: 24px; }
+    </style>
+</head>
+<body>
+
+<div class="kit-band">
+    <div class="wrap">
+        <span>CARGO GAADI · DESIGN KIT v1.0</span>
+        <span>tokens.css · single source of truth</span>
+    </div>
+</div>
+
+<header class="kit-header">
+    <div class="wrap">
+        <p class="t-eyebrow">Design system</p>
+        <h1 class="t-display-2" style="margin-top: 24px;">A workshop palette, not a coffee shop.</h1>
+        <p class="t-body-lg" style="margin-top: 16px; max-width: 700px;">
+            Cool ink, neutral paper, workshop green for brand, signal yellow for highlight. Built for utility, not lifestyle. Every value lives in <code style="font-family: var(--font-mono); background: var(--c-paper-2); padding: 2px 6px; border-radius: 4px; font-size: 14px;">tokens.css</code> — change it once, the whole site moves.
+        </p>
+    </div>
+</header>
+
+<!-- ─────────── Brand ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>01 · Brand colors</h2>
+        <p class="lede">Four colors do all the work. Ink for type and frames, paper for surfaces, forest for accent, signal for highlights.</p>
+        <div class="swatches">
+            <div class="swatch">
+                <div class="swatch-chip" style="background: var(--c-ink); color: var(--c-paper);">#161A1E</div>
+                <div class="swatch-meta">
+                    <div class="swatch-name">Ink</div>
+                    <div class="swatch-token">--c-ink</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-chip" style="background: var(--c-paper); color: var(--c-ink); border-bottom: 1px solid var(--c-hairline);">#F2F1ED</div>
+                <div class="swatch-meta">
+                    <div class="swatch-name">Paper</div>
+                    <div class="swatch-token">--c-paper</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-chip" style="background: var(--c-forest); color: var(--c-paper);">#2E4A37</div>
+                <div class="swatch-meta">
+                    <div class="swatch-name">Forest</div>
+                    <div class="swatch-token">--c-forest</div>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="swatch-chip" style="background: var(--c-signal); color: var(--c-ink);">#E8B53A</div>
+                <div class="swatch-meta">
+                    <div class="swatch-name">Signal</div>
+                    <div class="swatch-token">--c-signal</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Ink scale ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>02 · Ink scale (text)</h2>
+        <p class="lede">For all type and lines on paper. Never use pure black.</p>
+        <div class="swatches">
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-ink-100); color: var(--c-paper);">#161A1E</div><div class="swatch-meta"><div class="swatch-name">ink/100</div><div class="swatch-token">headlines</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-ink-90); color: var(--c-paper);">#232830</div><div class="swatch-meta"><div class="swatch-name">ink/90</div><div class="swatch-token">primary text</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-ink-80); color: var(--c-paper);">#2D3540</div><div class="swatch-meta"><div class="swatch-name">ink/80</div><div class="swatch-token">body</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-ink-60); color: var(--c-paper);">#5A6470</div><div class="swatch-meta"><div class="swatch-name">ink/60</div><div class="swatch-token">secondary</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-ink-40); color: var(--c-ink);">#8E96A2</div><div class="swatch-meta"><div class="swatch-name">ink/40</div><div class="swatch-token">tertiary, captions</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-ink-20); color: var(--c-ink);">#C2C7CE</div><div class="swatch-meta"><div class="swatch-name">ink/20</div><div class="swatch-token">disabled</div></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Surfaces ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>03 · Surfaces &amp; hairlines</h2>
+        <p class="lede">Three paper tones build section depth. One hairline.</p>
+        <div class="swatches">
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-paper); color: var(--c-ink); border-bottom: 1px solid var(--c-hairline);">#F2F1ED</div><div class="swatch-meta"><div class="swatch-name">paper</div><div class="swatch-token">base bg</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-paper-2); color: var(--c-ink);">#E8E5DA</div><div class="swatch-meta"><div class="swatch-name">paper/2</div><div class="swatch-token">sunken section</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-paper-3); color: var(--c-ink);">#DCD8C9</div><div class="swatch-meta"><div class="swatch-name">paper/3</div><div class="swatch-token">card on paper-2</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-hairline); color: var(--c-ink);">#D2CFC2</div><div class="swatch-meta"><div class="swatch-name">hairline</div><div class="swatch-token">1px borders</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-dark-surface); color: var(--c-paper);">#161A1E</div><div class="swatch-meta"><div class="swatch-name">dark surface</div><div class="swatch-token">inverted section</div></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Accent scales ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>04 · Accent scales</h2>
+        <p class="lede">Forest is the brand color. Signal is for highlights and "ours" markers. Use sparingly — let ink do the work.</p>
+        <div class="swatches">
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-forest-80); color: var(--c-paper);">#1B2D22</div><div class="swatch-meta"><div class="swatch-name">forest/80</div><div class="swatch-token">hover, deep</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-forest-100); color: var(--c-paper);">#2E4A37</div><div class="swatch-meta"><div class="swatch-name">forest/100</div><div class="swatch-token">brand</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-forest-60); color: var(--c-paper);">#4F6B57</div><div class="swatch-meta"><div class="swatch-name">forest/60</div><div class="swatch-token">subtle accent</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-forest-10); color: var(--c-ink);">#E3E9E4</div><div class="swatch-meta"><div class="swatch-name">forest/10</div><div class="swatch-token">tint</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-signal-deep); color: var(--c-ink);">#BE9020</div><div class="swatch-meta"><div class="swatch-name">signal/deep</div><div class="swatch-token">hover</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-signal-100); color: var(--c-ink);">#E8B53A</div><div class="swatch-meta"><div class="swatch-name">signal/100</div><div class="swatch-token">highlight</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-signal-pale); color: var(--c-ink);">#F5DE94</div><div class="swatch-meta"><div class="swatch-name">signal/pale</div><div class="swatch-token">subtle highlight</div></div></div>
+            <div class="swatch"><div class="swatch-chip" style="background: var(--c-signal-tint); color: var(--c-ink);">#FAF1D4</div><div class="swatch-meta"><div class="swatch-name">signal/tint</div><div class="swatch-token">background fills</div></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Typography ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>05 · Typography</h2>
+        <p class="lede">Two families. <strong style="color: var(--c-ink);">Space Grotesk</strong> for display (geometric, modern, slightly technical). <strong style="color: var(--c-ink);">Inter</strong> for body (clean workhorse). JetBrains Mono for spec values where precision matters.</p>
+
+        <div class="type-sample">
+            <div class="type-row">
+                <div class="type-meta">
+                    <strong>t-display-1</strong>
+                    Space Grotesk · 500<br>
+                    clamp(44–88px) / 1.05 / -0.02em
+                </div>
+                <div class="t-display-1">A cargo bike, built for India.</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">
+                    <strong>t-display-2</strong>
+                    Space Grotesk · 500<br>
+                    clamp(32–56px) / 1.2 / -0.01em
+                </div>
+                <div class="t-display-2">A long john carries the load in front of you.</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">
+                    <strong>t-display-3</strong>
+                    Space Grotesk · 500<br>
+                    clamp(24–34px)
+                </div>
+                <div class="t-display-3">What it carries — and how much.</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">
+                    <strong>t-title-1</strong>
+                    Space Grotesk · 500<br>
+                    22px / 1.2
+                </div>
+                <div class="t-title-1">Greenhouse and farm logistics</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">
+                    <strong>t-body-lg</strong>
+                    Inter · 400<br>
+                    19px / 1.65
+                </div>
+                <div class="t-body-lg">Cargo Gaadi was built for work. It carries crates, boxes, tools and produce — the kind of short, repeated hauls that happen every day.</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">
+                    <strong>t-body</strong>
+                    Inter · 400<br>
+                    16px / 1.5
+                </div>
+                <div class="t-body">Up to 100kg of packages through narrow lanes that vans cannot reach. Zero per-km cost.</div>
+            </div>
+            <div class="type-row">
+                <div class="type-meta">
+                    <strong>t-eyebrow</strong>
+                    Inter · 600 · uppercase<br>
+                    12px / 0.12em
+                </div>
+                <div class="t-eyebrow">The category</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Buttons ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>06 · Buttons</h2>
+        <p class="lede">Five variants. Pick by context, not aesthetic preference.</p>
+
+        <div class="btn-row">
+            <a class="btn btn--primary">Book a test ride <span class="arrow">→</span></a>
+            <a class="btn btn--secondary">Specifications <span class="arrow">→</span></a>
+            <a class="btn btn--ghost">What is a cargo bike?</a>
+            <a class="btn btn--signal">Highlight CTA <span class="arrow">→</span></a>
+        </div>
+
+        <div class="btn-row on-dark">
+            <a class="btn btn--primary">Primary on dark <span class="arrow">→</span></a>
+            <a class="btn btn--signal">Signal on dark <span class="arrow">→</span></a>
+            <a class="btn btn--ghost-on-dark">Ghost on dark</a>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Spacing ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>07 · Spacing scale</h2>
+        <p class="lede">4px base. Use only these steps — never odd values.</p>
+
+        <div style="font-family: var(--font-mono); font-size: 13px;">
+            <div class="spacing-row"><strong>--s-1</strong> 4px  <div class="spacing-bar" style="width: 4px;"></div></div>
+            <div class="spacing-row"><strong>--s-2</strong> 8px  <div class="spacing-bar" style="width: 8px;"></div></div>
+            <div class="spacing-row"><strong>--s-3</strong> 12px <div class="spacing-bar" style="width: 12px;"></div></div>
+            <div class="spacing-row"><strong>--s-4</strong> 16px <div class="spacing-bar" style="width: 16px;"></div></div>
+            <div class="spacing-row"><strong>--s-5</strong> 24px <div class="spacing-bar" style="width: 24px;"></div></div>
+            <div class="spacing-row"><strong>--s-6</strong> 32px <div class="spacing-bar" style="width: 32px;"></div></div>
+            <div class="spacing-row"><strong>--s-7</strong> 48px <div class="spacing-bar" style="width: 48px;"></div></div>
+            <div class="spacing-row"><strong>--s-8</strong> 64px <div class="spacing-bar" style="width: 64px;"></div></div>
+            <div class="spacing-row"><strong>--s-9</strong> 96px <div class="spacing-bar" style="width: 96px;"></div></div>
+            <div class="spacing-row"><strong>--s-10</strong> 128px <div class="spacing-bar" style="width: 128px;"></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Radii ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>08 · Radii</h2>
+        <p class="lede">Pills for CTAs, lg for cards and photos, md for tags and small surfaces, none for tables.</p>
+        <div class="radius-row">
+            <div class="radius-box" style="border-radius: var(--r-none);">0</div>
+            <div class="radius-box" style="border-radius: var(--r-sm);">4</div>
+            <div class="radius-box" style="border-radius: var(--r-md);">8</div>
+            <div class="radius-box" style="border-radius: var(--r-lg);">14</div>
+            <div class="radius-box" style="border-radius: var(--r-xl);">22</div>
+            <div class="radius-box" style="border-radius: var(--r-pill);">pill</div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Shadows ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>09 · Elevation</h2>
+        <p class="lede">Three levels. elev-2 for cards, elev-3 reserved for the hero photo only.</p>
+        <div class="shadow-row">
+            <div class="shadow-box" style="box-shadow: var(--elev-1);">elev-1</div>
+            <div class="shadow-box" style="box-shadow: var(--elev-2);">elev-2</div>
+            <div class="shadow-box" style="box-shadow: var(--elev-3);">elev-3</div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Components: tags & stats ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>10 · Tags &amp; chips</h2>
+        <p class="lede">Same shape, different role.</p>
+        <div class="btn-row">
+            <span class="tag tag--forest">Featured use</span>
+            <span class="tag tag--signal">★ What we build</span>
+            <span class="tag tag--paper">Workshop</span>
+            <span class="tag tag--outline">Specification</span>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Components: stat block ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>11 · Stat block</h2>
+        <p class="lede">The same component does duty on hero, specs, and comparisons.</p>
+        <div class="demo-stats">
+            <div>
+                <div class="stat-num">180<span class="unit">kg</span></div>
+                <div class="stat-label">Total load</div>
+            </div>
+            <div>
+                <div class="stat-num">21<span class="unit">kg</span></div>
+                <div class="stat-label">Bike weight</div>
+            </div>
+            <div>
+                <div class="stat-num">2.5<span class="unit">m</span></div>
+                <div class="stat-label">End to end</div>
+            </div>
+            <div>
+                <div class="stat-num">0<span class="unit">₹/km</span></div>
+                <div class="stat-label">Fuel cost</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Components: cargo bike type cards ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>12 · Type cards (cargo bike family)</h2>
+        <p class="lede">"Ours" card carries forest border + signal tag. Forest gradient pulls the eye.</p>
+        <div class="demo-types">
+            <div class="type-card">
+                <svg viewBox="0 0 100 50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--c-ink);">
+                    <circle cx="22" cy="38" r="9"/><circle cx="78" cy="38" r="9"/>
+                    <path d="M22 38 L42 18 L60 38 L78 38 M42 18 L65 18 L78 38 M50 18 L50 14"/>
+                    <rect x="40" y="8" width="22" height="10"/>
+                </svg>
+                <h4>Utility bike</h4>
+                <p>Light loads.</p>
+            </div>
+            <div class="type-card is-ours">
+                <svg viewBox="0 0 100 50" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color: var(--c-forest);">
+                    <circle cx="14" cy="38" r="9"/><circle cx="86" cy="38" r="9"/>
+                    <path d="M14 38 L24 18 L40 18 M86 38 L72 18 L72 12"/>
+                    <rect x="24" y="22" width="50" height="16" fill="var(--c-forest)" stroke="none" rx="2"/>
+                    <path d="M14 38 L86 38" stroke-width="1.4"/>
+                </svg>
+                <h4>Long John</h4>
+                <p>Heavy loads, low CG.</p>
+                <span class="tag tag--signal" style="margin-top: 10px;">★ What we build</span>
+            </div>
+            <div class="type-card">
+                <svg viewBox="0 0 100 50" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--c-ink);">
+                    <circle cx="22" cy="38" r="9"/><circle cx="85" cy="38" r="9"/>
+                    <path d="M22 38 L40 18 L85 38 M55 18 L85 18 L85 38 M70 18 L70 14"/>
+                    <rect x="45" y="20" width="35" height="14" fill="var(--c-ink)" stroke="none"/>
+                </svg>
+                <h4>Longtail</h4>
+                <p>Stretched rear rack.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Component: spec row ─────────── -->
+<section class="kit-section">
+    <div class="wrap">
+        <h2>13 · Spec row</h2>
+        <p class="lede">For technical lists. Label · Value, single hairline between.</p>
+        <div style="max-width: 560px;">
+            <div class="spec-row"><span class="label">Frame</span><span class="value">Steel, TIG welded</span></div>
+            <div class="spec-row"><span class="label">Total length</span><span class="value">2,500 mm</span></div>
+            <div class="spec-row"><span class="label">Bike weight</span><span class="value">21 kg</span></div>
+            <div class="spec-row"><span class="label">Load capacity</span><span class="value">100 kg + rider</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- ─────────── Rules ─────────── -->
+<section class="kit-section" style="background: var(--c-paper-2); margin-top: 0;">
+    <div class="wrap">
+        <h2>14 · Rules of consistency</h2>
+        <p class="lede">If you find yourself reaching for these, stop — the design system already handles it.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 24px;">
+            <div>
+                <div class="tag tag--forest" style="margin-bottom: 12px;">Do</div>
+                <ul style="list-style: none; font-size: 15px; line-height: 1.7; color: var(--c-ink-80);">
+                    <li>✓ Use <code style="font-family: var(--font-mono); background: var(--c-paper); padding: 1px 6px; border-radius: 4px; font-size: 13px;">var(--c-forest)</code> for every primary CTA</li>
+                    <li>✓ Use <code style="font-family: var(--font-mono); background: var(--c-paper); padding: 1px 6px; border-radius: 4px; font-size: 13px;">var(--c-signal)</code> only on "ours" markers + key highlights</li>
+                    <li>✓ Alternate <code style="font-family: var(--font-mono); background: var(--c-paper); padding: 1px 6px; border-radius: 4px; font-size: 13px;">paper → paper-2 → dark</code> for section rhythm</li>
+                    <li>✓ Pick from the spacing scale always</li>
+                    <li>✓ One CTA per section, primary action only</li>
+                </ul>
+            </div>
+            <div>
+                <div class="tag" style="margin-bottom: 12px; background: var(--c-rust); color: var(--c-paper);">Don't</div>
+                <ul style="list-style: none; font-size: 15px; line-height: 1.7; color: var(--c-ink-80);">
+                    <li>✗ Add a new color "just for this section"</li>
+                    <li>✗ Use pure black <code style="font-family: var(--font-mono); background: var(--c-paper); padding: 1px 6px; border-radius: 4px; font-size: 13px;">#000</code> or pure white <code style="font-family: var(--font-mono); background: var(--c-paper); padding: 1px 6px; border-radius: 4px; font-size: 13px;">#fff</code></li>
+                    <li>✗ Hardcode color hexes in HTML — always via tokens</li>
+                    <li>✗ Use signal yellow as a background fill on large areas</li>
+                    <li>✗ Use terracotta / cream — these were the Anthropic palette and are out</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer style="padding: 40px 0; border-top: 1px solid var(--c-hairline);">
+    <div class="wrap" style="display: flex; justify-content: space-between; color: var(--c-ink-60); font-size: 14px;">
+        <span>Cargo Gaadi · Design Kit</span>
+        <span style="font-family: var(--font-mono);">tokens.css · v1.0</span>
+    </div>
+</footer>
+
+</body>
+</html>

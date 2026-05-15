@@ -1,0 +1,429 @@
+/* ============================================================
+   Cargo Gaadi — Design Tokens
+   Single source of truth for color, type, spacing, components.
+   Edit values HERE only. Do not hardcode colors in HTML files.
+   ============================================================ */
+
+:root {
+
+  /* ---------- BRAND ---------- */
+  --c-ink:         #161A1E;   /* primary brand · steel · frame */
+  --c-paper:       #F2F1ED;   /* neutral background — NOT warm cream */
+  --c-forest:      #2E4A37;   /* primary accent · workshop green */
+  --c-signal:      #E8B53A;   /* highlight · work yellow */
+
+  /* ---------- INK SCALE (text on paper) ---------- */
+  --c-ink-100:     #161A1E;
+  --c-ink-90:      #232830;
+  --c-ink-80:      #2D3540;
+  --c-ink-60:      #5A6470;
+  --c-ink-40:      #8E96A2;
+  --c-ink-20:      #C2C7CE;
+  --c-ink-10:      #DCE0E5;
+
+  /* ---------- SURFACES ---------- */
+  --c-paper:       #F2F1ED;
+  --c-paper-2:     #E8E5DA;   /* sunken / alternate section */
+  --c-paper-3:     #DCD8C9;   /* card on paper-2 */
+  --c-hairline:    #D2CFC2;   /* default 1px border on paper */
+  --c-hairline-strong: #B8B3A1;
+
+  /* ---------- BRAND ACCENT SCALE ---------- */
+  --c-forest-100:  #2E4A37;
+  --c-forest-90:   #243A2C;
+  --c-forest-80:   #1B2D22;
+  --c-forest-60:   #4F6B57;
+  --c-forest-20:   #C9D2CB;
+  --c-forest-10:   #E3E9E4;
+
+  --c-signal-100:  #E8B53A;
+  --c-signal-deep: #BE9020;
+  --c-signal-pale: #F5DE94;
+  --c-signal-tint: #FAF1D4;
+
+  /* ---------- FUNCTIONAL (use sparingly) ---------- */
+  --c-rust:        #8C4A2E;   /* contrast in comparison tables only */
+  --c-sky:         #3F6478;   /* links inside body copy if needed */
+
+  /* ---------- DARK SURFACE (e.g. compare section) ---------- */
+  --c-dark-surface: #161A1E;
+  --c-dark-text:    #ECEAE4;
+  --c-dark-text-muted: #9BA1A8;
+  --c-dark-hairline:   #2A3038;
+  --c-dark-accent:  #E8B53A;     /* signal yellow stays visible on ink */
+
+  /* ---------- TYPOGRAPHY ---------- */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* Type scale — fluid clamps */
+  --t-display-1:  clamp(44px, 7vw, 88px);
+  --t-display-2:  clamp(32px, 4.5vw, 56px);
+  --t-display-3:  clamp(24px, 2.6vw, 34px);
+  --t-title-1:    22px;
+  --t-title-2:    18px;
+  --t-body-lg:    19px;
+  --t-body:       16px;
+  --t-body-sm:    14px;
+  --t-caption:    13px;
+  --t-eyebrow:    12px;
+
+  /* Line heights */
+  --lh-tight:     1.05;
+  --lh-snug:      1.2;
+  --lh-normal:    1.5;
+  --lh-relaxed:   1.65;
+
+  /* Letter spacing */
+  --ls-tight:     -0.02em;
+  --ls-snug:      -0.01em;
+  --ls-normal:    0;
+  --ls-wide:      0.04em;
+  --ls-wider:     0.12em;
+
+  /* Weights */
+  --w-regular:    400;
+  --w-medium:     500;
+  --w-semibold:   600;
+  --w-bold:       700;
+
+  /* ---------- SPACING ---------- */
+  --s-1:   4px;
+  --s-2:   8px;
+  --s-3:   12px;
+  --s-4:   16px;
+  --s-5:   24px;
+  --s-6:   32px;
+  --s-7:   48px;
+  --s-8:   64px;
+  --s-9:   96px;
+  --s-10:  128px;
+
+  /* Section vertical rhythm */
+  --section-y:        120px;
+  --section-y-mobile: 72px;
+
+  /* Container widths */
+  --wrap-max:    1280px;
+  --wrap-narrow: 880px;
+  --wrap-pad:    32px;
+  --wrap-pad-mobile: 20px;
+
+  /* ---------- RADII ---------- */
+  --r-none: 0;
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-lg:   14px;
+  --r-xl:   22px;
+  --r-pill: 999px;
+
+  /* ---------- SHADOWS ---------- */
+  --elev-1: 0 1px 2px rgba(22, 26, 30, 0.04);
+  --elev-2: 0 2px 6px rgba(22, 26, 30, 0.06), 0 1px 2px rgba(22, 26, 30, 0.04);
+  --elev-3: 0 12px 32px rgba(22, 26, 30, 0.08), 0 2px 6px rgba(22, 26, 30, 0.05);
+
+  /* ---------- MOTION ---------- */
+  --ease-out:    cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --d-fast:      120ms;
+  --d-base:      220ms;
+  --d-slow:      400ms;
+}
+
+/* ============================================================
+   GLOBAL RESETS + BASE
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: var(--lh-normal);
+  color: var(--c-ink-90);
+  background: var(--c-paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--c-signal);
+  color: var(--c-ink);
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; height: auto; }
+
+/* ============================================================
+   TYPOGRAPHY UTILITIES (composable, never hardcode in HTML)
+   ============================================================ */
+
+.t-display-1 {
+  font-family: var(--font-display);
+  font-size: var(--t-display-1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  font-weight: var(--w-medium);
+  color: var(--c-ink);
+}
+
+.t-display-2 {
+  font-family: var(--font-display);
+  font-size: var(--t-display-2);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-snug);
+  font-weight: var(--w-medium);
+  color: var(--c-ink);
+}
+
+.t-display-3 {
+  font-family: var(--font-display);
+  font-size: var(--t-display-3);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-snug);
+  font-weight: var(--w-medium);
+  color: var(--c-ink);
+}
+
+.t-title-1 {
+  font-family: var(--font-display);
+  font-size: var(--t-title-1);
+  line-height: var(--lh-snug);
+  font-weight: var(--w-medium);
+  color: var(--c-ink);
+}
+
+.t-body-lg {
+  font-size: var(--t-body-lg);
+  line-height: var(--lh-relaxed);
+  color: var(--c-ink-80);
+}
+
+.t-body { font-size: var(--t-body); line-height: var(--lh-normal); color: var(--c-ink-80); }
+
+.t-caption {
+  font-size: var(--t-caption);
+  line-height: var(--lh-normal);
+  color: var(--c-ink-60);
+}
+
+.t-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--t-eyebrow);
+  font-weight: var(--w-semibold);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--c-forest);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.t-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  background: var(--c-forest);
+  display: inline-block;
+}
+
+.t-eyebrow.is-on-dark { color: var(--c-signal); }
+.t-eyebrow.is-on-dark::before { background: var(--c-signal); }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+
+.wrap {
+  max-width: var(--wrap-max);
+  margin: 0 auto;
+  padding: 0 var(--wrap-pad);
+}
+
+.wrap-narrow {
+  max-width: var(--wrap-narrow);
+  margin: 0 auto;
+  padding: 0 var(--wrap-pad);
+}
+
+.section {
+  padding: var(--section-y) 0;
+}
+
+.section--sunken { background: var(--c-paper-2); }
+.section--dark   { background: var(--c-dark-surface); color: var(--c-dark-text); }
+.section--dark .t-display-1,
+.section--dark .t-display-2,
+.section--dark .t-display-3,
+.section--dark .t-title-1 { color: var(--c-dark-text); }
+.section--dark .t-body-lg,
+.section--dark .t-body    { color: var(--c-dark-text-muted); }
+
+/* ============================================================
+   BUTTON SYSTEM — only these four. No one-off button styles.
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: var(--w-semibold);
+  line-height: 1;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background var(--d-base) var(--ease-out),
+              color var(--d-base) var(--ease-out),
+              transform var(--d-base) var(--ease-out),
+              border-color var(--d-base) var(--ease-out);
+  white-space: nowrap;
+}
+.btn .arrow { transition: transform var(--d-base) var(--ease-out); display: inline-block; }
+.btn:hover .arrow { transform: translateX(3px); }
+
+.btn--primary {
+  background: var(--c-forest);
+  color: var(--c-paper);
+}
+.btn--primary:hover { background: var(--c-forest-80); transform: translateY(-1px); }
+
+.btn--secondary {
+  background: var(--c-ink);
+  color: var(--c-paper);
+}
+.btn--secondary:hover { background: var(--c-ink-90); transform: translateY(-1px); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--c-ink);
+  border-color: var(--c-ink);
+}
+.btn--ghost:hover { background: var(--c-ink); color: var(--c-paper); }
+
+.btn--ghost-on-dark {
+  background: transparent;
+  color: var(--c-dark-text);
+  border-color: var(--c-dark-text);
+}
+.btn--ghost-on-dark:hover { background: var(--c-dark-text); color: var(--c-ink); }
+
+.btn--signal {
+  background: var(--c-signal);
+  color: var(--c-ink);
+}
+.btn--signal:hover { background: var(--c-signal-deep); color: var(--c-ink); }
+
+/* ============================================================
+   TAG / CHIP
+   ============================================================ */
+
+.tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: var(--w-bold);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+.tag--forest { background: var(--c-forest); color: var(--c-paper); }
+.tag--signal { background: var(--c-signal); color: var(--c-ink); }
+.tag--paper  { background: var(--c-paper); color: var(--c-ink); }
+.tag--outline { background: transparent; color: var(--c-ink); border: 1px solid var(--c-hairline-strong); }
+
+/* ============================================================
+   CARD
+   ============================================================ */
+
+.card {
+  background: var(--c-paper);
+  border: 1px solid var(--c-hairline);
+  border-radius: var(--r-lg);
+  padding: var(--s-5);
+  transition: transform var(--d-base) var(--ease-out),
+              box-shadow var(--d-base) var(--ease-out),
+              border-color var(--d-base) var(--ease-out);
+}
+.card--sunken { background: var(--c-paper-2); border-color: var(--c-hairline); }
+.card--marked { border-color: var(--c-forest); box-shadow: var(--elev-2); }
+.card--interactive:hover { transform: translateY(-3px); box-shadow: var(--elev-2); }
+
+/* ============================================================
+   STAT
+   ============================================================ */
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4vw, 48px);
+  font-weight: var(--w-medium);
+  line-height: 1;
+  color: var(--c-ink);
+  letter-spacing: var(--ls-tight);
+}
+.stat-num .unit {
+  font-size: 0.4em;
+  color: var(--c-ink-60);
+  margin-left: 4px;
+  font-weight: var(--w-regular);
+}
+.stat-label {
+  margin-top: 10px;
+  font-size: var(--t-caption);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--c-ink-60);
+  font-weight: var(--w-semibold);
+}
+
+/* ============================================================
+   SPEC ROW
+   ============================================================ */
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--c-hairline);
+  gap: 24px;
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-row .label {
+  font-size: var(--t-caption);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--c-ink-60);
+  font-weight: var(--w-semibold);
+}
+.spec-row .value {
+  font-family: var(--font-display);
+  font-size: var(--t-title-1);
+  font-weight: var(--w-medium);
+  color: var(--c-ink);
+  text-align: right;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 920px) {
+  :root {
+    --section-y: var(--section-y-mobile);
+    --wrap-pad: var(--wrap-pad-mobile);
+  }
+}
